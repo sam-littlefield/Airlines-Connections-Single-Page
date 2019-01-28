@@ -26,12 +26,6 @@
     <div id="map">
     </div>
     <script>
-      d3.csv('./data/flights-airport.csv', function(data) {
-        console.log(data)
-      })
-      d3.csv('./data/airports.csv', function(data) {
-        console.log(data)
-      })
       var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   			maxZoom: 18,
   			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Points &copy 2012 LINZ'
@@ -48,10 +42,18 @@
       var markers = L.markerClusterGroup();
       map.addLayer(markers);
 
-      var marker = L.marker(L.latLng(0, 0));
-      markers.addLayer(marker);
-      var marker = L.marker(L.latLng(0, 0));
-      markers.addLayer(marker);
+      d3.csv('./data/flights-airport.csv', function(data) {
+        data.forEach(function (flightObject, key) {
+          console.log(flightObject);
+        });
+      })
+      d3.csv('./data/airports.csv', function(data) {
+        data.forEach(function (airportObject, key) {
+          var latLng = new L.LatLng(airportObject['latitude'], airportObject['longitude']);
+          var marker = L.circleMarker(latLng, airportObject )
+    			markers.addLayer(marker);
+        });
+      });
 
     </script>
   </body>
