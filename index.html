@@ -58,11 +58,11 @@
       var airport = {};
       d3.csv('./data/airports.csv', function(data) {
         data.forEach(function (airportObject, key) {
-          var latLng = new L.LatLng(airportObject['latitude'], airportObject['longitude']);
-          var marker = L.circleMarker(latLng, airportObject )
+          airportObject['latlng'] = new L.LatLng(airportObject['latitude'], airportObject['longitude']);
+          var marker = L.circleMarker(airportObject['latlng'], airportObject )
           marker.bindPopup(airportObject['name']);
     			markers.addLayer(marker);
-          airport[airportObject['iata']] = latLng;
+          airport[airportObject['iata']] = airportObject;
         });
       });
 
@@ -75,13 +75,14 @@
           relatedFlights.forEach(function (locationObj, key) {
             var destination = airport[locationObj['destination']]
             var origin = airport[locationObj['origin']]
-            var pointList = [origin, destination];
+            var pointList = [origin.latlng, destination.latlng];
             var firstpolyline = new L.Polyline(pointList, {
                 color: '#f44336',
                 weight: 10,
                 opacity: 0.5,
                 smoothFactor: 1
             });
+            firstpolyline.bindPopup(origin.name + ' to ' + destination.name);
             firstpolyline.addTo(lineLayer)
           });
         }
