@@ -42,11 +42,16 @@
       var markers = L.markerClusterGroup();
       map.addLayer(markers);
 
+      var flightAirport = {};
       d3.csv('./data/flights-airport.csv', function(data) {
         data.forEach(function (flightObject, key) {
-          console.log(flightObject);
+          if( !flightAirport[flightObject.origin] ){
+            flightAirport[flightObject.origin] = [];
+          }
+          flightAirport[flightObject.origin].push(flightObject);
         });
-      })
+      });
+
       d3.csv('./data/airports.csv', function(data) {
         data.forEach(function (airportObject, key) {
           var latLng = new L.LatLng(airportObject['latitude'], airportObject['longitude']);
