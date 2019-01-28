@@ -52,12 +52,14 @@
         });
       });
 
+      var airport = {};
       d3.csv('./data/airports.csv', function(data) {
         data.forEach(function (airportObject, key) {
           var latLng = new L.LatLng(airportObject['latitude'], airportObject['longitude']);
           var marker = L.circleMarker(latLng, airportObject )
           marker.bindPopup(airportObject['name']);
     			markers.addLayer(marker);
+          airport[airportObject['name']] = latLng
         });
       });
 
