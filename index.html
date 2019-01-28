@@ -56,6 +56,7 @@
         data.forEach(function (airportObject, key) {
           var latLng = new L.LatLng(airportObject['latitude'], airportObject['longitude']);
           var marker = L.circleMarker(latLng, airportObject )
+          marker.bindPopup(airportObject['name']);
     			markers.addLayer(marker);
         });
       });
