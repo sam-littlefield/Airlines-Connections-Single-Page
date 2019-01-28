@@ -68,6 +68,8 @@
 
 
       var addLines = function(originName){
+        lineLayer.clearLayers();
+
         if( flightAirport[originName] ){
           var relatedFlights = flightAirport[originName];
           relatedFlights.forEach(function (locationObj, key) {
@@ -84,6 +86,12 @@
           });
         }
       };
+      map.on('click',function(e){
+        lineLayer.clearLayers();
+      })
+      map.on('move',function(e){
+        lineLayer.clearLayers();
+      })
       markers.on('click', function (a) {
         addLines(a.layer.options.iata)
       });
